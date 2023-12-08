@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Blog Post Editor</title>
+    {{ form.media }}  <!-- TinyMCEのJavaScriptを読み込む -->
+    <script>
+        tinymce.init({
+            selector: 'textarea',
+            relative_urls: false,
+            images_upload_url: '/blog/image-upload/',  // 画像アップロードのエンドポイント
+            plugins: [
+                'advlist autolink lists link image charmap print preview anchor',
+                'searchreplace visualblocks code fullscreen',
+                'insertdatetime media table paste code help wordcount'
+            ],
+            toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media fullpage | forecolor backcolor emoticons | help',
+        });
+    </script>
+</head>
+<body>
+    <h1>Blog Post Editor</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}  <!-- CSRFトークンを追加 -->
+        <!-- 個別にフィールドを表示 -->
+        <div>
+            {{ form.title.label_tag }}  <!-- タイトルフィールドのラベル -->
+            {{ form.title }}            <!-- タイトルフィールド -->
+        </div>
+        <div>
+            {{ form.content.label_tag }}  <!-- コンテンツフィールドのラベル -->
+            {{ form.content }}            <!-- コンテンツフィールド -->
+        </div>
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>

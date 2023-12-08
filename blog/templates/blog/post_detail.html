@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ post.title }}</title>
+</head>
+<body>
+    <h1>{{ post.title }}</h1>
+    <p>Posted on: {{ post.created_at }}</p>
+    <a href="{% url 'post_edit' pk=post.pk %}">編集</a>
+    <div>{{ post.content|safe }}</div>
+    {% for comment in post.comments.all %}
+        <div class="comment">
+            <div class="date">{{ comment.created_date }}</div>
+            <strong>{{ comment.author }}</strong>
+            <p>{{ comment.text }}</p>
+            <a href="{% url 'delete_comment' comment.id %}">Delete</a> <!-- Added delete link -->
+        </div>
+    {% endfor %}
+    <form method="POST" action="{{ request.path }}"> <!-- Added action attribute -->
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Submit comment</button>
+    </form>
+    <a href="{% url 'post_list' %}">ブログリストへ戻る</a>
+</body>
+</html>
